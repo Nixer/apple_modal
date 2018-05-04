@@ -4,6 +4,8 @@ import time
 import os
 from yattag import Doc
 from yattag import indent
+import html
+
 
 
 def md(url):
@@ -38,10 +40,17 @@ def modal(url):
 
 
 def html_generate(url_list):
+    file = open(os.getcwd() + "/styles.css", "r")
+    css = file.read()
+    file.close()
+    css = html.unescape(css)
     dirname = md(url_list[0][1])
     doc, tag, text, line = Doc().ttl()
     doc.asis('<!DOCTYPE html>')
     with tag('html'):
+        with tag('head'):
+            with tag('style'):
+                text(css)
         with tag('body'):
             with tag('table'):
                 for i in range(len(url_list)):
